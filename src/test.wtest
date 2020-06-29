@@ -1,0 +1,40 @@
+import vemdedores.*
+import ciudades.*
+import centrosDeDistribucion.*
+import clientes.*
+
+describe "test" {
+	const vendedorFijo = new VendedorFijo(certificaciones = [certificacionB, certificacionF], ciudadQueVive= hurlingham )
+	const vendedorViajero = new Viajante(certificaciones = [certificacionB, certificacionE], estaHabilitado = [buenosAires, santaFe, chubut])
+	const comercio1 = new ComercioCorresponsal(certificaciones = [certificacionC, certificacionD, certificacionE], tieneSucursalEn = [hurlingham, chivilcoy, zarate, rafaela])
+	
+	const centro = new CentroDeDistribucion(ciudad = hurlingham, vendedores = #{comercio1, vendedorViajero})
+	
+	const certificacionA = new Certificacion(sobreProducto = false, puntos = 30)
+	const certificacionB = new Certificacion(sobreProducto = false, puntos = 25)
+	const certificacionC = new Certificacion(sobreProducto = false, puntos =  7)
+	const certificacionD = new Certificacion(sobreProducto = true, puntos = 5)
+	const certificacionE = new Certificacion(sobreProducto = true, puntos = 10)
+	const certificacionF = new Certificacion(sobreProducto = true, puntos = 34)	
+
+
+	const buenosAires = new Provincia(poblacion = 15000000 )
+	const chubut = new Provincia(poblacion = 1430000)
+	const salta = new Provincia(poblacion = 33332222)
+	const santaFe = new Provincia(poblacion = 3000000)
+	const hurlingham = new Ciudad(poblacion = 60000, provincia = buenosAires)
+	const chivilcoy = new Ciudad(poblacion = 25000, provincia = buenosAires)
+	const zarate = new Ciudad(poblacion = 50000, provincia = buenosAires)
+	const rafaela = new Ciudad(poblacion = 35000, provincia = santaFe)
+	
+	
+
+
+ test "vendedorFijo" {
+  assert.equals(hurlingham, vendedorFijo.ciudadQueVive())
+  
+
+}
+
+
+}
