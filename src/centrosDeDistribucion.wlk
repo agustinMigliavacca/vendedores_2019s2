@@ -14,12 +14,12 @@ class CentroDeDistribucion {
 		return vendedores.max({ v => v.puntaje()})
 	}
 	
-	method puedeCubrir(en) {
-		return vendedores.any({ v => v.puedeTrabajar(en)})
+	method puedeCubrir() {
+		return vendedores.any({ v => v.puedeTrabajar(ciudad)})
 	}
 	
 	method vendedoresGenericos() {
-		vendedores.any({ v=> v.certificacionesQueNoSon()})
+		return vendedores.filter({ v=> v.certificacionesQueNoSon() >= 1}).asList()
 	}
 	
 	method esRobusto() {
@@ -29,8 +29,10 @@ class CentroDeDistribucion {
   		vendedores.forEach({ v => v.agregarCertificacion(new Certificacion(puntos = punto, sobreProducto = producto))})
   	}
   	
+  	
+  	
   	method tieneAfinidad(vendedor) {
-  		return  vendedor.puedeTrabajar(ciudad)
+  		return  vendedor.puedeTrabajar(self.ciudad())
   		
   	}
   	

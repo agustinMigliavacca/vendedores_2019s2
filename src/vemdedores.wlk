@@ -1,18 +1,22 @@
 import ciudades.*
 class Certificacion {
 	var property puntos
-	var property sobreProducto
+	var property sobreProducto 
 }
 
 class Vendedores {
  	var property certificaciones =  []
+	
 	method esFisica()
+	
+	
 	
 	method agregarCertificacion(certificacion) {
 		certificaciones.add(certificacion)
 	}
 	
-	method certificacionesDeProducto() {
+    method certificacionesDeProducto() {
+		
 		return certificaciones.filter({c => c.sobreProducto()}).size()
 	}
 	
@@ -58,14 +62,14 @@ class VendedorFijo inherits Vendedores {
 }
 
 class Viajante inherits Vendedores {
-	var property estaHabilitado = []
+	var property  estaHabilitado = []
 	
 	method provinciaHabilitada(provincia) {
 		estaHabilitado.add(provincia)
 	}
 	
 	override method puedeTrabajar(ciudad) {
-		return self.estaHabilitado(ciudad)
+		return estaHabilitado.contains(ciudad)
 		
 		}
 	method sumaDePoblacion() {

@@ -4,11 +4,7 @@ import centrosDeDistribucion.*
 import clientes.*
 
 describe "test" {
-	const vendedorFijo = new VendedorFijo(certificaciones = [certificacionB, certificacionF], ciudadQueVive= hurlingham )
-	const vendedorViajero = new Viajante(certificaciones = [certificacionB, certificacionE], estaHabilitado = [buenosAires, santaFe, chubut])
-	const comercio1 = new ComercioCorresponsal(certificaciones = [certificacionC, certificacionD, certificacionE], tieneSucursalEn = [hurlingham, chivilcoy, zarate, rafaela])
 	
-	const centro = new CentroDeDistribucion(ciudad = hurlingham, vendedores = #{comercio1, vendedorViajero})
 	
 	const certificacionA = new Certificacion(sobreProducto = false, puntos = 30)
 	const certificacionB = new Certificacion(sobreProducto = false, puntos = 25)
@@ -27,14 +23,74 @@ describe "test" {
 	const zarate = new Ciudad(poblacion = 50000, provincia = buenosAires)
 	const rafaela = new Ciudad(poblacion = 35000, provincia = santaFe)
 	
+
 	
+	const vendedorFijo = new VendedorFijo(certificaciones = [certificacionB, certificacionF], ciudadQueVive= hurlingham )
+	const vendedorViajero = new Viajante(certificaciones = [certificacionB, certificacionE], estaHabilitado = [buenosAires, santaFe, chubut])
+	const comercio1 = new ComercioCorresponsal(certificaciones = [certificacionC, certificacionD, certificacionE], tieneSucursalEn = [hurlingham, chivilcoy, zarate, rafaela])
+	const fijo = new VendedorFijo(certificaciones = [certificacionB, certificacionF], ciudadQueVive= hurlingham )
+	
+	const centro = new CentroDeDistribucion(ciudad = hurlingham, vendedores = #{comercio1, vendedorViajero})
+
+
+
 
 
  test "vendedorFijo" {
   assert.equals(hurlingham, vendedorFijo.ciudadQueVive())
+  assert.equals(1, vendedorFijo.certificacionesDeProducto())
+  assert.equals(1, vendedorFijo.certificacionesQueNoSon())
+  assert.equals(59, vendedorFijo.puntaje())
+  assert.notThat(vendedorFijo.puedeTrabajar(santaFe))
+  assert.that(vendedorFijo.puedeTrabajar(hurlingham))
   
 
 }
 
+test "viajante" {
+  assert.equals([buenosAires, santaFe, chubut], vendedorViajero.estaHabilitado())
+  assert.equals(1, vendedorViajero.certificacionesDeProducto())
+  assert.equals(1, vendedorViajero.certificacionesQueNoSon())
+  assert.equals(35, vendedorViajero.puntaje())
+
+  assert.that(vendedorViajero.puedeTrabajar(santaFe))
+  assert.notThat(vendedorViajero.puedeTrabajar(hurlingham))
+  
+  assert.that(vendedorViajero.vendedorInfluyente())
+
 
 }
+
+test "comercio" {
+  assert.equals([hurlingham, chivilcoy, zarate, rafaela], comercio1.tieneSucursalEn())
+  assert.equals(2, comercio1.certificacionesDeProducto())
+  assert.equals(1, comercio1.certificacionesQueNoSon())
+  assert.equals(22, comercio1.puntaje())
+
+  assert.that(comercio1.puedeTrabajar(hurlingham))
+  assert.notThat(comercio1.puedeTrabajar(santaFe))
+	
+  assert.notThat(comercio1.vendedorInfluyente())
+}
+
+
+test "centro" {
+	assert.equals(vendedorViajero , centro.vendedorEstrella())
+	assert.that(centro.puedeCubrir())
+	centro.ciudad(salta)
+	assert.notThat(centro.puedeCubrir())
+	assert.equals([comercio1, vendedorViajero], centro.vendedoresGenericos())
+	assert.notThat(centro.esRobusto())
+	centro.agregarVendendor(vendedorFijo)
+	centro.agregarVendendor(fijo)
+	assert.that(centro.esRobusto())
+	
+	
+	} 
+}
+
+
+
+
+
+
